@@ -215,8 +215,13 @@ class TestAllMethods(unittest.TestCase):
         self.assertEqual(self.s1.inventory["Taco"], 50)
         self.f1.validate_order(self.c1,self.s1, "Taco", 100)
         self.assertEqual(self.s1.inventory["Taco"], 50)
-		# case 3: check if the cashier can order item from that stall
-        #testing that during a successful transaction, the cost of the order is subtracted from the customer's wallet
+		# case 3: check if the cashier cannot order item from that stall
+        #testing that no money is subtracted from customer's wallet if the cashier doesn't have the vendor in its directory
+        self.assertEqual(self.f1.wallet, 100)
+        self.f1.validate_order(self.c1, "Burger Joint", "Burger", 6)
+        self.assertEqual(self.f1.wallet, 100)
+        #case 4: a successful transaction in which all criteria is met
+        #testing that during a successful order validation, the cost of the order is subtracted from the customer's wallet
         self.assertEqual(self.f1.wallet, 100)
         self.f1.validate_order(self.c1, self.s1, "Burger", 1)
         self.assertEqual(self.f1.wallet, 90)
